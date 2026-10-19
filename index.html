@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-[#F7F5F0]">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academia Classica - Portal Belajar Modern Klasik</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display (Serif Klasik) & Plus Jakarta Sans (Sans Modern) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#152035',
+                            900: '#0F172A',
+                            950: '#0A0F1D',
+                        },
+                        gold: {
+                            300: '#FDE047',
+                            400: '#FACC15',
+                            500: '#D97706',
+                            600: '#C59B27',
+                            700: '#B45309',
+                        },
+                        parchment: '#F4F1EA',
+                        ivory: '#FDFBF7',
+                    },
+                    fontFamily: {
+                        serif: ['Playfair Display', 'Georgia', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'classic': '0 10px 30px -5px rgba(15, 23, 42, 0.08), 0 0 15px 0 rgba(197, 155, 39, 0.1)',
+                        'gold-glow': '0 0 20px rgba(197, 155, 39, 0.35)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom Scrollbar Classic Style */
+        ::-webkit-scrollbar {
+            width: 7px;
+            height: 7px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F4F1EA;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C59B27;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #B45309;
+        }
+        
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #D97706 0%, #C59B27 50%, #92400E 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .gold-border-gradient {
+            border-image: linear-gradient(to right, #C59B27, #FACC15, #C59B27) 1;
+        }
+
+        /* Subtle Luxury Pattern background */
+        .bg-pattern {
+            background-color: #F7F5F0;
+            background-image: radial-gradient(#C59B27 0.5px, transparent 0.5px), radial-gradient(#C59B27 0.5px, #F7F5F0 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            background-opacity: 0.05;
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s cubic-bezier(0, 1, 0, 1);
+        }
+        .accordion-content.open {
+            max-height: 1000px;
+            transition: max-height 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-slate-800 bg-[#F7F5F0] flex flex-col min-h-screen">
+
+    <!-- Header / Navbar Top -->
+    <header class="sticky top-0 z-40 bg-navy-900 border-b-2 border-gold-600/40 text-ivory shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Logo & Brand -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('dashboard')">
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-gold-500 to-gold-700 flex items-center justify-center text-navy-950 font-serif text-2xl font-bold border-2 border-amber-200 shadow-md transform hover:rotate-6 transition duration-300">
+                        <i class="fa-solid me-0.5 fa-graduation-cap"></i>
+                    </div>
+                    <div>
+                        <span class="font-serif text-xl sm:text-2xl font-bold tracking-wide text-ivory block leading-none">Academia Classica</span>
+                        <span class="text-xs font-sans tracking-widest text-gold-400 uppercase font-semibold">Excellencia et Virtus</span>
+                    </div>
+                </div>
+
+                <!-- Global Search Input (Desktop) -->
+                <div class="hidden md:flex flex-1 max-w-md mx-8 relative">
+                    <input type="text" placeholder="Cari materi, kuis, atau tugas kelompok..." class="w-full bg-navy-950/80 text-sm text-ivory placeholder-slate-400 rounded-full pl-10 pr-4 py-2 border border-gold-600/30 focus:outline-none focus:border-gold-500 focus:ring-1 focus:ring-gold-500 transition">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-gold-500 text-sm"></i>
+                </div>
+
+                <!-- User Profile & Action Indicator -->
+                <div class="flex items-center space-x-4">
+                    <!-- Status Absensi Hari ini -->
+                    <div class="hidden sm:flex items-center bg-navy-950 px-3 py-1.5 rounded-full border border-gold-600/40 text-xs">
+                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse mr-2"></span>
+                        <span class="text-slate-300">Status: <strong class="text-emerald-400 font-medium" id="nav-attendance-status">Hadir (07:45 WB)</strong></span>
+                    </div>
+
+                    <!-- User Avatar & Dropdown -->
+                    <div class="flex items-center space-x-3 border-l border-slate-700 pl-4">
+                        <div class="text-right hidden lg:block">
+                            <p class="text-sm font-semibold text-ivory leading-snug">Arya Penangsang</p>
+                            <p class="text-[11px] text-gold-400 font-mono">NISN: 202604812</p>
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150" alt="Siswa Avatar" class="w-10 h-10 rounded-full border-2 border-gold-500 object-cover shadow-sm">
+                    </div>
+
+                    <!-- Mobile Sidebar Toggle -->
+                    <button id="mobile-menu-btn" onclick="toggleMobileSidebar()" class="lg:hidden text-gold-400 hover:text-ivory focus:outline-none text-xl p-2">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container with Sidebar Navigation -->
+    <div class="flex-1 flex max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 gap-6 relative">
+        
+        <!-- Sidebar Navigation (Desktop) -->
+        <aside id="sidebar-nav" class="fixed inset-y-0 left-0 z-30 w-64 bg-navy-900 border-r border-gold-600/30 transform -translate-x-full lg:translate-x-0 lg:static lg:w-64 transition-transform duration-300 ease-in-out flex flex-col justify-between rounded-2xl my-auto lg:my-0 h-[calc(100vh-7rem)] lg:h-auto shadow-2xl lg:shadow-none p-4">
+            <div>
+                <!-- Mobile Header Inside Menu -->
+                <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-800 lg:hidden">
+                    <span class="font-serif text-lg text-gold-400 font-bold">Navigasi Utama</span>
+                    <button onclick="toggleMobileSidebar()" class="text-slate-400 hover:text-ivory text-xl">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <p class="text-[11px] uppercase tracking-widest text-slate-400 font-bold px-3 mb-2 font-mono">Menu Utama</p>
+                <nav class="space-y-1.5" id="main-nav">
+                    <button onclick="switchTab('dashboard')" id="nav-btn-dashboard" class="nav-link w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium transition duration-200 bg-gold-600 text-navy-950 font-semibold shadow-md">
+                        <i class="fa-solid fa-compass w-5 text-center text-lg"></i>
+                        <span>Dashboard Utama</span>
+                    </button>
+                    <button onclick="switchTab('courses')" id="nav-btn-courses" class="nav-link w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-navy-800 hover:text-gold-400 transition duration-200">
+                        <i class="fa-solid fa-book-bookmark w-5 text-center text-lg"></i>
+                        <span>Mata Pelajaran</span>
+                    </button>
+                    <button onclick="switchTab('evaluations')" id="nav-btn-evaluations" class="nav-link w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-navy-800 hover:text-gold-400 transition duration-200">
+                        <i class="fa-solid fa-file-pen w-5 text-center text-lg"></i>
+                        <span>Evaluasi & Ujian</span>
+                    </button>
+                    <button onclick="switchTab('assignments')" id="nav-btn-assignments" class="nav-link w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-navy-800 hover:text-gold-400 transition duration-200">
+                        <i class="fa-solid fa-users-rectangle w-5 text-center text-lg"></i>
+                        <span>Tugas Kelompok</span>
+                    </button>
+                    <button onclick="switchTab('attendance')" id="nav-btn-attendance" class="nav-link w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-300 hover:bg-navy-800 hover:text-gold-400 transition duration-200">
+                        <i class="fa-solid fa-clipboard-user w-5 text-center text-lg"></i>
+                        <span>Absensi Siswa</span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Bottom Classical Quote Card -->
+            <div class="mt-8 bg-gradient-to-br from-navy-950 to-navy-800 border border-gold-600/30 p-4 rounded-xl text-center">
+                <i class="fa-solid fa-quote-left text-gold-500/40 text-2xl mb-1 block"></i>
+                <p class="font-serif italic text-xs text-slate-300">"Non scholae, sed vitae discimus."</p>
+                <p class="text-[10px] text-gold-400 font-semibold mt-1">— Kita belajar bukan untuk sekolah, melainkan untuk hidup.</p>
+            </div>
+        </aside>
+
+        <!-- Overlay backdrop for Mobile Sidebar -->
+        <div id="sidebar-backdrop" onclick="toggleMobileSidebar()" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-20 hidden lg:hidden"></div>
+
+        <!-- Dynamic Content View Area -->
+        <main class="flex-1 min-w-0">
+            
+            <!-- 1. TAB DASHBOARD UTAMA -->
+            <section id="tab-dashboard" class="tab-content space-y-6">
+                
+                <!-- Banner Welcome / Pengumuman Utama -->
+                <div class="relative overflow-hidden bg-navy-900 border-2 border-gold-600/50 rounded-2xl p-6 sm:p-8 text-ivory shadow-classic">
+                    <div class="absolute -right-10 -bottom-10 opacity-10 text-gold-400 text-9xl font-serif pointer-events-none">
+                        <i class="fa-solid fa-landmark"></i>
+                    </div>
+                    <div class="relative z-10 max-w-2xl">
+                        <span class="inline-block px-3 py-1 bg-gold-600/20 text-gold-400 border border-gold-500/40 rounded-full text-xs font-semibold tracking-wide uppercase mb-3">
+                            <i class="fa-solid fa-bullhorn mr-1.5"></i> Pengumuman Akademik Terbaru
+                        </span>
+                        <h1 class="font-serif text-2xl sm:text-3xl font-bold text-ivory mb-2">Selamat Datang Kembali, Arya Penangsang</h1>
+                        <p class="text-slate-300 text-sm leading-relaxed mb-4">
+                            Ujian Tengah Semester Gasal Peradaban Dunia & Matematika Vektor akan dilaksanakan minggu depan. Pastikan seluruh bab materi telah diselesaikan dan absensi tetap terjaga minimal 85%.
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            <button onclick="switchTab('courses')" class="px-4 py-2 bg-gradient-to-r from-gold-500 to-gold-600 text-navy-950 text-xs font-bold uppercase tracking-wider rounded-lg hover:brightness-110 transition shadow-md">
+                                Layani Materi Hari Ini <i class="fa-solid fa-arrow-right ml-1"></i>
+                            </button>
+                            <button onclick="switchTab('attendance')" class="px-4 py-2 bg-navy-950 border border-gold-600/40 text-gold-400 text-xs font-semibold rounded-lg hover:bg-navy-800 transition">
+                                Presensi Mandiri
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid Stat Card Quick Summary -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    
+                    <!-- Card 1 -->
+                    <div class="bg-ivory border border-gold-600/20 p-5 rounded-xl shadow-sm hover:border-gold-600/50 transition">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Progres Belajar</span>
+                            <div class="w-9 h-9 rounded-lg bg-amber-100 text-gold-600 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                        </div>
+                        <p class="text-2xl font-serif font-bold text-navy-900 mt-2">78%</p>
+                        <div class="w-full bg-slate-200 h-2 rounded-full mt-3 overflow-hidden">
+                            <div class="bg-gradient-to-r from-gold-500 to-amber-600 h-full rounded-full" style="width: 78%"></div>
+                        </div>
+                        <span class="text-[11px] text-slate-500 mt-2 block">18 dari 23 Sub-Bab Selesai</span>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="bg-ivory border border-gold-600/20 p-5 rounded-xl shadow-sm hover:border-gold-600/50 transition">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Rata-Rata Evaluasi</span>
+                            <div class="w-9 h-9 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-award"></i>
+                            </div>
+                        </div>
+                        <p class="text-2xl font-serif font-bold text-navy-900 mt-2">91.4 <span class="text-xs text-slate-400 font-sans">/ 100</span></p>
+                        <p class="text-xs text-emerald-600 font-medium mt-3 flex items-center">
+                            <i class="fa-solid fa-arrow-trend-up mr-1"></i> Predikat Sangat Memuaskan (A)
+                        </p>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="bg-ivory border border-gold-600/20 p-5 rounded-xl shadow-sm hover:border-gold-600/50 transition">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Tugas Kelompok</span>
+                            <div class="w-9 h-9 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-people-group"></i>
+                            </div>
+                        </div>
+                        <p class="text-2xl font-serif font-bold text-navy-900 mt-2">2 Active</p>
+                        <p class="text-xs text-amber-600 font-medium mt-3 flex items-center">
+                            <i class="fa-solid fa-clock mr-1"></i> Deadline terdekat: 2 Hari Lagi
+                        </p>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="bg-ivory border border-gold-600/20 p-5 rounded-xl shadow-sm hover:border-gold-600/50 transition">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Kehadiran Bulanan</span>
+                            <div class="w-9 h-9 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center text-lg">
+                                <i class="fa-solid fa-calendar-check"></i>
+                            </div>
+                        </div>
+                        <p class="text-2xl font-serif font-bold text-navy-900 mt-2">96%</p>
+                        <p class="text-xs text-purple-700 font-medium mt-3">22 Hadir, 1 Izin, 0 Alpa</p>
+                    </div>
+                </div>
+
+                <!-- Section Main Content Grid (Jadwal Hari ini & Akses Cepat) -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Jadwal Pelajaran Hari Ini (2 Cols) -->
+                    <div class="lg:col-span-2 bg-ivory border border-gold-600/20 rounded-2xl p-6 shadow-sm">
+                        <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-4">
+                            <h2 class="font-serif text-lg font-bold text-navy-900 flex items-center">
+                                <i class="fa-regular fa-clock text-gold-600 mr-2"></i> Jadwal Pembelajaran Hari Ini
+                            </h2>
+                            <span class="text-xs font-semibold text-slate-500 bg-parchment px-3 py-1 rounded-full border border-slate-300">
+                                Senin, 19 Oktober 2026
+                            </span>
+                        </div>
+
+                        <div class="space-y-3">
+                            <!-- Item Jadwal 1 -->
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-xl border border-gold-600/20 bg-parchment/60 hover:bg-parchment transition">
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-10 h-10 rounded-lg bg-navy-900 text-gold-400 flex items-center justify-center font-serif font-bold text-sm shrink-0 mt-0.5 sm:mt-0">
+                                        01
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold text-navy-900 text-sm">Sejarah Dunia & Peradaban Klasik</h3>
+                                        <p class="text-xs text-slate-500">Bab 3: Kekaisaran Romawi Kuno & Sistem Hukum</p>
+                                        <span class="inline-block text-[11px] text-gold-700 font-medium mt-1"><i class="fa-solid fa-video mr-1"></i> Telekonferensi Interaktif</span>
+                                    </div>
+                                </div>
+                                <div class="mt-3 sm:mt-0 sm:text-right w-full sm:w-auto flex sm:flex-col justify-between items-center sm:items-end border-t sm:border-0 border-slate-200 pt-2 sm:pt-0">
+                                    <span class="text-xs font-mono font-bold text-navy-900">08:00 - 09:30 WIB</span>
+                                    <button onclick="openLessonDetail('sejarah-3')" class="mt-1 px-3 py-1 text-xs bg-navy-900 text-gold-400 rounded-lg hover:bg-navy-800 transition">Masuk Kelas</button>
+                                </div>
+                            </div>
+
+                            <!-- Item Jadwal 2 -->
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-xl border border-slate-200 bg-white hover:border-gold-500 transition">
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-10 h-10 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-serif font-bold text-sm shrink-0 mt-0.5 sm:mt-0">
+                                        02
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold text-navy-900 text-sm">Matematika & Analisis Vektor</h3>
+                                        <p class="text-xs text-slate-500">Bab 4: Kuis Terpadu Kalkulus Integrasi</p>
+                                        <span class="inline-block text-[11px] text-amber-600 font-medium mt-1"><i class="fa-solid fa-pen-to-square mr-1"></i> Evaluasi Mandiri</span>
+                                    </div>
+                                </div>
+                                <div class="mt-3 sm:mt-0 sm:text-right w-full sm:w-auto flex sm:flex-col justify-between items-center sm:items-end border-t sm:border-0 border-slate-200 pt-2 sm:pt-0">
+                                    <span class="text-xs font-mono font-bold text-navy-900">10:00 - 11:30 WIB</span>
+                                    <button onclick="switchTab('evaluations')" class="mt-1 px-3 py-1 text-xs border border-gold-600 text-gold-700 rounded-lg hover:bg-gold-50 transition">Kerjakan Kuis</button>
+                                </div>
+                            </div>
+
+                            <!-- Item Jadwal 3 -->
+                            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 rounded-xl border border-slate-200 bg-white hover:border-gold-500 transition">
+                                <div class="flex items-start space-x-3">
+                                    <div class="w-10 h-10 rounded-lg bg-slate-100 text-slate-700 flex items-center justify-center font-serif font-bold text-sm shrink-0 mt-0.5 sm:mt-0">
+                                        03
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold text-navy-900 text-sm">Pemrograman & Rekayasa Perangkat Lunak</h3>
+                                        <p class="text-xs text-slate-500">Tugas Kelompok: Perancangan Arsitektur Database</p>
+                                        <span class="inline-block text-[11px] text-blue-600 font-medium mt-1"><i class="fa-solid fa-comments mr-1"></i> Ruang Diskusi Kelompok 2</span>
+                                    </div>
+                                </div>
+                                <div class="mt-3 sm:mt-0 sm:text-right w-full sm:w-auto flex sm:flex-col justify-between items-center sm:items-end border-t sm:border-0 border-slate-200 pt-2 sm:pt-0">
+                                    <span class="text-xs font-mono font-bold text-navy-900">13:00 - 14:30 WIB</span>
+                                    <button onclick="switchTab('assignments')" class="mt-1 px-3 py-1 text-xs bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition">Ruang Kelompok</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Kartu Akses Cepat & Pendidik -->
+                    <div class="space-y-6">
+                        
+                        <!-- Mini Card Pengajar & Konsultasi -->
+                        <div class="bg-navy-900 border border-gold-600/30 rounded-2xl p-5 text-ivory">
+                            <h3 class="font-serif font-bold text-gold-400 text-base mb-3 flex items-center">
+                                <i class="fa-solid fa-user-tie mr-2"></i> Dosen / Guru Mentor
+                            </h3>
+                            <div class="flex items-center space-x-3 mb-4">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150" alt="Prof. Cornelius" class="w-12 h-12 rounded-full border-2 border-gold-500 object-cover">
+                                <div>
+                                    <p class="text-sm font-semibold text-ivory">Prof. Cornelius Vance, Ph.D.</p>
+                                    <p class="text-xs text-slate-400">Master Sejarah & Filsafat Sains</p>
+                                </div>
+                            </div>
+                            <button onclick="alert('Fitur pesan pribadi guru/mentor terbuka. Silahkan tulis pertanyaan Anda.')" class="w-full py-2 bg-gold-600/20 border border-gold-500/50 text-gold-400 hover:bg-gold-600 hover:text-navy-950 transition text-xs font-semibold rounded-lg">
+                                <i class="fa-regular fa-envelope mr-1.5"></i> Konsultasi Private
+                            </button>
+                        </div>
+
+                        <!-- Pengumuman Ringkas Perpustakaan Digital -->
+                        <div class="bg-ivory border border-gold-600/20 rounded-2xl p-5 shadow-sm">
+                            <h3 class="font-serif font-bold text-navy-900 text-base mb-2 flex items-center">
+                                <i class="fa-solid fa-book-open text-gold-600 mr-2"></i> Perpustakaan Klasik
+                            </h3>
+                            <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                                Telah ditambahkan 14 E-Book referensi baru mengenai Algoritma Pemrograman dan Ensiklopedia Peradaban Yunani.
+                            </p>
+                            <a href="#" onclick="alert('Membuka koleksi repositori pustaka klasik...')" class="text-xs font-bold text-gold-700 hover:underline inline-flex items-center">
+                                Buka Repositori E-Book <i class="fa-solid fa-chevron-right ml-1 text-[10px]"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- 2. TAB MATA PELAJARAN (COURSES & LESSONS) -->
+            <section id="tab-courses" class="tab-content hidden space-y-6">
+                
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-ivory p-6 rounded-2xl border border-gold-600/20">
+                    <div>
+                        <h1 class="font-serif text-2xl font-bold text-navy-900">Kurikulum & Mata Pelajaran</h1>
+                        <p class="text-xs text-slate-500 mt-1">Pilih mata pelajaran untuk melihat bab, sub-bab, serta rangkuman materi lengkap.</p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <select id="course-filter" class="bg-parchment text-xs font-semibold border border-gold-600/30 text-navy-900 rounded-lg px-3 py-2 focus:outline-none focus:border-gold-600">
+                            <option value="all">Semua Bidang Ilmu</option>
+                            <option value="sejarah">Sejarah & Humaniora</option>
+                            <option value="sains">Sains & Matematika</option>
+                            <option value="teknologi">Teknologi & Informatika</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Grid Daftar Mata Pelajaran -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="courses-grid">
+                    
+                    <!-- Subject 1 -->
+                    <div class="bg-ivory border border-gold-600/30 rounded-2xl overflow-hidden shadow-sm hover:shadow-classic transition flex flex-col justify-between">
+                        <div>
+                            <div class="h-32 bg-navy-900 relative p-4 flex flex-col justify-between">
+                                <span class="bg-gold-600 text-navy-950 font-bold text-[10px] tracking-widest uppercase px-2 py-0.5 rounded w-max">Humaniora</span>
+                                <i class="fa-solid fa-building-columns absolute right-4 bottom-2 text-gold-500/20 text-6xl"></i>
+                                <h3 class="font-serif text-lg font-bold text-ivory z-10 leading-snug">Sejarah Dunia & Peradaban</h3>
+                            </div>
+                            <div class="p-5 space-y-3">
+                                <p class="text-xs text-slate-600 line-clamp-2">Mempelajari asal-usul peradaban kuno, hukum klasik, perkembangan budaya, hingga era sains modern.</p>
+                                <div class="text-xs text-slate-500 space-y-1">
+                                    <div class="flex justify-between">
+                                        <span>Progres Topik:</span>
+                                        <span class="font-bold text-navy-900">4 / 5 Bab Selesai</span>
+                                    </div>
+                                    <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                                        <div class="bg-gold-600 h-full rounded-full" style="width: 80%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-5 pt-0">
+                            <button onclick="viewCourseDetail('sejarah')" class="w-full py-2.5 bg-navy-900 text-gold-400 font-semibold text-xs rounded-xl hover:bg-navy-800 transition flex items-center justify-center">
+                                Penjelajahan Bab & Sub-Bab <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Subject 2 -->
+                    <div class="bg-ivory border border-gold-600/30 rounded-2xl overflow-hidden shadow-sm hover:shadow-classic transition flex flex-col justify-between">
+                        <div>
+                            <div class="h-32 bg-navy-900 relative p-4 flex flex-col justify-between">
+                                <span class="bg-blue-600 text-white font-bold text-[10px] tracking-widest uppercase px-2 py-0.5 rounded w-max">Matematika</span>
+                                <i class="fa-solid fa-square-root-variable absolute right-4 bottom-2 text-blue-400/20 text-6xl"></i>
+                                <h3 class="font-serif text-lg font-bold text-ivory z-10 leading-snug">Matematika & Analisis Vektor</h3>
+                            </div>
+                            <div class="p-5 space-y-3">
+                                <p class="text-xs text-slate-600 line-clamp-2">Kalkulus tingkat lanjut, geometri analitis, matriks, serta penerapannya dalam pemodelan sains.</p>
+                                <div class="text-xs text-slate-500 space-y-1">
+                                    <div class="flex justify-between">
+                                        <span>Progres Topik:</span>
+                                        <span class="font-bold text-navy-900">3 / 6 Bab Selesai</span>
+                                    </div>
+                                    <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                                        <div class="bg-blue-600 h-full rounded-full" style="width: 50%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-5 pt-0">
+                            <button onclick="viewCourseDetail('matematika')" class="w-full py-2.5 bg-navy-900 text-gold-400 font-semibold text-xs rounded-xl hover:bg-navy-800 transition flex items-center justify-center">
+                                Penjelajahan Bab & Sub-Bab <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Subject 3 -->
+                    <div class="bg-ivory border border-gold-600/30 rounded-2xl overflow-hidden shadow-sm hover:shadow-classic transition flex flex-col justify-between">
+                        <div>
+                            <div class="h-32 bg-navy-900 relative p-4 flex flex-col justify-between">
+                                <span class="bg-emerald-600 text-white font-bold text-[10px] tracking-widest uppercase px-2 py-0.5 rounded w-max">Informatika</span>
+                                <i class="fa-solid fa-code absolute right-4 bottom-2 text-emerald-400/20 text-6xl"></i>
+                                <h3 class="font-serif text-lg font-bold text-ivory z-10 leading-snug">Pemrograman & Algorithm</h3>
+                            </div>
+                            <div class="p-5 space-y-3">
+                                <p class="text-xs text-slate-600 line-clamp-2">Konsep rekayasa perangkat lunak, struktur data, paradigma objek, dan algoritma efisien.</p>
+                                <div class="text-xs text-slate-500 space-y-1">
+                                    <div class="flex justify-between">
+                                        <span>Progres Topik:</span>
+                                        <span class="font-bold text-navy-900">5 / 5 Bab Selesai</span>
+                                    </div>
+                                    <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+                                        <div class="bg-emerald-600 h-full rounded-full" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-5 pt-0">
+                            <button onclick="viewCourseDetail('pemrograman')" class="w-full py-2.5 bg-navy-900 text-gold-400 font-semibold text-xs rounded-xl hover:bg-navy-800 transition flex items-center justify-center">
+                                Penjelajahan Bab & Sub-Bab <i class="fa-solid fa-arrow-right ml-2 text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Hierarchical Detail Container (Terbuka saat diklik) -->
+                <div id="course-hierarchy-section" class="bg-ivory border-2 border-gold-600/40 rounded-2xl p-6 shadow-classic hidden">
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-200">
+                        <div class="flex items-center space-x-3">
+                            <button onclick="closeCourseHierarchy()" class="p-2 bg-parchment hover:bg-slate-200 rounded-lg text-slate-700 transition">
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </button>
+                            <div>
+                                <span class="text-xs font-semibold text-gold-600 uppercase tracking-widest" id="hierarchy-category">Humaniora</span>
+                                <h2 class="font-serif text-xl font-bold text-navy-900" id="hierarchy-title">Sejarah Dunia & Peradaban</h2>
+                            </div>
+                        </div>
+                        <span class="text-xs bg-navy-900 text-gold-400 font-semibold px-3 py-1 rounded-full" id="hierarchy-status">4/5 Bab Tuntas</span>
+                    </div>
+
+                    <!-- Accordion Bab & Sub-Bab List -->
+                    <div class="mt-6 space-y-4" id="accordion-chapters">
+                        <!-- Chapter 1 Accordion Item -->
+                        <div class="border border-gold-600/30 rounded-xl overflow-hidden bg-white">
+                            <button onclick="toggleAccordion('chap-1')" class="w-full flex items-center justify-between p-4 bg-parchment/70 hover:bg-parchment text-left transition">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-7 h-7 rounded-full bg-navy-900 text-gold-400 flex items-center justify-center text-xs font-bold">1</span>
+                                    <span class="font-serif font-bold text-navy-900 text-sm">Bab 1: Fajar Peradaban Mesopotamia & Mesir Kuno</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-down text-slate-500 transition-transform duration-200" id="icon-chap-1"></i>
+                            </button>
+                            <div id="chap-1" class="accordion-content px-4 py-2 border-t border-slate-100 bg-white">
+                                <ul class="divide-y divide-slate-100 text-xs">
+                                    <li class="py-3 flex items-center justify-between hover:bg-slate-50 px-2 rounded">
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
+                                            <span class="font-medium text-slate-800">Sub-Bab 1.1: Sistem Tulisan Cuneiform dan Kode Hammurabi</span>
+                                        </div>
+                                        <button onclick="openLessonDetail('sejarah-1-1')" class="px-2.5 py-1 text-[11px] bg-navy-900 text-gold-400 rounded hover:bg-navy-800">Pelajari Materi</button>
+                                    </li>
+                                    <li class="py-3 flex items-center justify-between hover:bg-slate-50 px-2 rounded">
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
+                                            <span class="font-medium text-slate-800">Sub-Bab 1.2: Arsitektur Piramida & Kepercayaan Mesir Kuno</span>
+                                        </div>
+                                        <button onclick="openLessonDetail('sejarah-1-2')" class="px-2.5 py-1 text-[11px] bg-navy-900 text-gold-400 rounded hover:bg-navy-800">Pelajari Materi</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Chapter 2 Accordion Item -->
+                        <div class="border border-gold-600/30 rounded-xl overflow-hidden bg-white">
+                            <button onclick="toggleAccordion('chap-2')" class="w-full flex items-center justify-between p-4 bg-parchment/70 hover:bg-parchment text-left transition">
+                                <div class="flex items-center space-x-3">
+                                    <span class="w-7 h-7 rounded-full bg-navy-900 text-gold-400 flex items-center justify-center text-xs font-bold">2</span>
+                                    <span class="font-serif font-bold text-navy-900 text-sm">Bab 2: Zaman Keemasan Yunani Klasik & Filsafat Utama</span>
+                                </div>
+                                <i class="fa-solid fa-chevron-down text-slate-500 transition-transform duration-200" id="icon-chap-2"></i>
+                            </button>
+                            <div id="chap-2" class="accordion-content px-4 py-2 border-t border-slate-100 bg-white">
+                                <ul class="divide-y divide-slate-100 text-xs">
+                                    <li class="py-3 flex items-center justify-between hover:bg-slate-50 px-2 rounded">
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fa-solid fa-circle-check text-emerald-500 text-sm"></i>
+                                            <span class="font-medium text-slate-800">Sub-Bab 2.1: Demokrasi Athena vs Militerisme Sparta</span>
+                                        </div>
+                                        <button onclick="openLessonDetail('sejarah-2-1')" class="px-2.5 py-1 text-[11px] bg-navy-900 text-gold-400 rounded hover:bg-navy-800">Pelajari Materi</button>
+                                    </li>
+                                    <li class="py-3 flex items-center justify-between hover:bg-slate-50 px-2 rounded">
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fa-solid fa-circle-play text-gold-600 text-sm"></i>
+                                            <span class="font-medium text-slate-800">Sub-Bab 2.2: Pemikiran Sokrates, Plato, dan Aristoteles</span>
+                                        </div>
+                                        <button onclick="openLessonDetail('sejarah-2-2')" class="px-2.5 py-1 text-[11px] bg-navy-900 text-gold-400 rounded hover:bg-navy-800">Pelajari Materi</button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reading Material View Modal Container -->
+                <div id="lesson-material-modal" class="fixed inset-0 bg-navy-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+                    <div class="bg-ivory border-2 border-gold-600 max-w-4xl w-full max-h-[90vh] rounded-2xl overflow-y-auto shadow-2xl flex flex-col">
+                        <div class="sticky top-0 bg-navy-900 p-5 text-ivory flex items-center justify-between border-b-2 border-gold-600 z-10">
+                            <div>
+                                <span class="text-xs text-gold-400 font-mono" id="modal-lesson-sub">Sub-Bab 2.2</span>
+                                <h3 class="font-serif text-lg sm:text-xl font-bold" id="modal-lesson-title">Pemikiran Sokrates, Plato, dan Aristoteles</h3>
+                            </div>
+                            <button onclick="closeLessonModal()" class="text-slate-400 hover:text-gold-400 text-2xl font-bold">
+                                &times;
+                            </button>
+                        </div>
+                        <div class="p-6 space-y-6 text-slate-800 font-sans leading-relaxed text-sm">
+                            
+                            <!-- Video Player Mockup -->
+                            <div class="aspect-video bg-navy-950 rounded-xl flex flex-col items-center justify-center border border-gold-600/30 text-gold-400 relative overflow-hidden group cursor-pointer shadow-md">
+                                <i class="fa-solid fa-circle-play text-6xl group-hover:scale-110 transition"></i>
+                                <span class="mt-3 font-serif font-semibold text-ivory">Putar Kuliah Interaktif: Dialektika Sokrates (24 Menit)</span>
+                                <span class="text-xs text-slate-400">Pendidik: Prof. Cornelius Vance</span>
+                            </div>
+
+                            <div class="space-y-4">
+                                <h4 class="font-serif text-lg font-bold text-navy-900 border-b border-gold-600/20 pb-2">Rangkuman Bacaan Utama</h4>
+                                <p>
+                                    Filsafat Yunani Klasik menandai pergeseran pemikiran manusia dari penjelasan mitologis menuju analisis rasional ilmiah. Tiga tokoh utama yang membentuk pondasi pemikiran Barat adalah Sokrates, Plato, dan Aristoteles.
+                                </p>
+                                <div class="bg-parchment p-4 border-l-4 border-gold-600 rounded-r-lg space-y-2">
+                                    <strong class="font-serif text-navy-900 block">Metode Elenchos (Metode Sokratik):</strong>
+                                    <p class="text-xs text-slate-700">Teknik tanya-jawab secara terus menerus untuk membedah prasangka, menemukan kontradiksi, dan membimbing pikiran menuju kebenaran universal.</p>
+                                </div>
+                                <p>
+                                    Plato melanjutkan warisan ini dengan mendirikan *Akademia* dan mencetuskan Teori Bentuk (Theory of Forms), sementara Aristoteles menyempurnakannya melalui pendekatan empiris, logika formal, dan etika kebajikan (Virtue Ethics).
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-parchment border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-xs text-slate-500"><i class="fa-solid fa-check-double text-emerald-600"></i> Tandai selesai untuk menambah skor progres</span>
+                            <button onclick="markLessonComplete()" class="px-5 py-2 bg-gold-600 text-navy-950 font-bold text-xs rounded-xl hover:bg-gold-500 shadow transition">
+                                Selesai & Lanjut
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- 3. TAB EVALUASI & KUIS (EVALUATION & QUIZ) -->
+            <section id="tab-evaluations" class="tab-content hidden space-y-6">
+                
+                <div class="bg-ivory border border-gold-600/20 rounded-2xl p-6 shadow-sm">
+                    <h1 class="font-serif text-2xl font-bold text-navy-900">Evaluasi & Kuis Interaktif</h1>
+                    <p class="text-xs text-slate-500 mt-1">Uji pemahaman Anda melalui kuis mandiri terstruktur dengan skor langsung & rangkuman analisis.</p>
+                </div>
+
+                <!-- Selection Card Active Quiz -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="quiz-list-container">
+                    
+                    <!-- Quiz Card 1 -->
+                    <div class="bg-ivory border-2 border-gold-600/40 rounded-2xl p-6 shadow-sm hover:shadow-classic transition flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 bg-amber-100 text-amber-800 text-[11px] font-bold rounded-full">Kuis Pilihan Ganda</span>
+                                <span class="text-xs text-slate-500 font-mono"><i class="fa-regular fa-clock"></i> 15 Menit</span>
+                            </div>
+                            <h3 class="font-serif text-lg font-bold text-navy-900 mb-2">Evaluasi Bab 2: Filsafat & Peradaban Yunani Kuno</h3>
+                            <p class="text-xs text-slate-600 mb-4">Ujian singkat 3 soal mencakup metode Sokrates, teori Plato, dan konsep polis Athena.</p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-xs text-slate-500 font-semibold">Skor KKM: 75/100</span>
+                            <button onclick="startQuiz()" class="px-4 py-2 bg-navy-900 text-gold-400 font-bold text-xs rounded-xl hover:bg-navy-800 transition">
+                                Mulai Kuis Sekarang
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Card 2 (Completed) -->
+                    <div class="bg-ivory border border-slate-200 rounded-2xl p-6 shadow-sm opacity-90 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 text-[11px] font-bold rounded-full"><i class="fa-solid fa-check mr-1"></i> Selesai Dikerjakan</span>
+                                <span class="text-xs text-slate-500 font-mono">12 Okt 2026</span>
+                            </div>
+                            <h3 class="font-serif text-lg font-bold text-navy-900 mb-2">Kuis Vektor & Algoritma Dasar</h3>
+                            <p class="text-xs text-slate-600 mb-4">Pemeriksaan logika pemrograman dan kalkulus ruang vektor 3 dimensi.</p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-200 flex items-center justify-between">
+                            <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">Hasil: 95/100 (Sangat Baik)</span>
+                            <button onclick="alert('Membuka rekapitulasi jawaban kuis sebelumnya...')" class="px-3 py-1.5 text-xs border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-100">
+                                Rekap Jawaban
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Interactive Quiz Area (Hidden by Default) -->
+                <div id="quiz-active-area" class="bg-ivory border-2 border-gold-600 rounded-2xl p-6 shadow-2xl hidden">
+                    
+                    <!-- Header Timer & Info -->
+                    <div class="flex items-center justify-between pb-4 border-b border-slate-200 mb-6">
+                        <div>
+                            <h2 class="font-serif text-lg font-bold text-navy-900">Evaluasi Bab 2: Filsafat Yunani Kuno</h2>
+                            <p class="text-xs text-slate-500">Jawab pertanyaan berikut dengan teliti sebelum batas waktu berakhir.</p>
+                        </div>
+                        <div class="bg-navy-950 text-gold-400 px-4 py-2 rounded-xl font-mono text-sm font-bold border border-gold-600/40 flex items-center">
+                            <i class="fa-regular fa-clock mr-2 animate-pulse"></i>
+                            <span id="quiz-timer">14:59</span>
+                        </div>
+                    </div>
+
+                    <!-- Question Container -->
+                    <div id="quiz-questions-step">
+                        
+                        <!-- Question 1 -->
+                        <div class="space-y-4 mb-6">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-6 h-6 rounded-full bg-gold-600 text-navy-950 font-bold text-xs flex items-center justify-center">1</span>
+                                <h3 class="font-serif font-bold text-navy-900 text-base">Apakah sebutan untuk teknik dialektika tanya-jawab yang dikembangkan oleh Sokrates untuk menggali kebenaran?</h3>
+                            </div>
+                            <div class="space-y-2 pl-8">
+                                <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:border-gold-500 bg-white cursor-pointer transition">
+                                    <input type="radio" name="q1" value="A" class="text-gold-600 focus:ring-gold-500">
+                                    <span class="ml-3 text-xs font-medium text-slate-800">A. Metode Syllogisme</span>
+                                </label>
+                                <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:border-gold-500 bg-white cursor-pointer transition">
+                                    <input type="radio" name="q1" value="B" class="text-gold-600 focus:ring-gold-500">
+                                    <span class="ml-3 text-xs font-medium text-slate-800">B. Metode Elenchos</span>
+                                </label>
+                                <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:border-gold-500 bg-white cursor-pointer transition">
+                                    <input type="radio" name="q1" value="C" class="text-gold-600 focus:ring-gold-500">
+                                    <span class="ml-3 text-xs font-medium text-slate-800">C. Metode Empirisme Sensualis</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Question 2 -->
+                        <div class="space-y-4 mb-6">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-6 h-6 rounded-full bg-gold-600 text-navy-950 font-bold text-xs flex items-center justify-center">2</span>
+                                <h3 class="font-serif font-bold text-navy-900 text-base">Siapakah filsuf Yunani Klasik yang mendirikan institusi pendidikan terkenal bernama "Akademia"?</h3>
+                            </div>
+                            <div class="space-y-2 pl-8">
+                                <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:border-gold-500 bg-white cursor-pointer transition">
+                                    <input type="radio" name="q2" value="A" class="text-gold-600 focus:ring-gold-500">
+                                    <span class="ml-3 text-xs font-medium text-slate-800">A. Plato</span>
+                                </label>
+                                <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:border-gold-500 bg-white cursor-pointer transition">
+                                    <input type="radio" name="q2" value="B" class="text-gold-600 focus:ring-gold-500">
+                                    <span class="ml-3 text-xs font-medium text-slate-800">B. Aristoteles</span>
+                                </label>
+                                <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:border-gold-500 bg-white cursor-pointer transition">
+                                    <input type="radio" name="q2" value="C" class="text-gold-600 focus:ring-gold-500">
+                                    <span class="ml-3 text-xs font-medium text-slate-800">C. Thales dari Miletus</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Short Essay Question -->
+                        <div class="space-y-3 mb-6">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-6 h-6 rounded-full bg-gold-600 text-navy-950 font-bold text-xs flex items-center justify-center">3</span>
+                                <h3 class="font-serif font-bold text-navy-900 text-base">Refleksi Singkat (Esai Pendek): Jelaskan secara ringkas kontribusi utama filsafat Yunani bagi ilmu pengetahuan modern.</h3>
+                            </div>
+                            <textarea id="essay-ans" rows="3" placeholder="Tuliskan analisis ringkas Anda di sini (minimal 15 kata)..." class="w-full text-xs p-3 rounded-xl border border-slate-300 focus:border-gold-600 focus:outline-none bg-white"></textarea>
+                        </div>
+
+                        <div class="flex justify-end space-x-3 pt-4 border-t border-slate-200">
+                            <button onclick="cancelQuiz()" class="px-4 py-2 border border-slate-300 text-slate-600 text-xs font-semibold rounded-xl hover:bg-slate-100">Batalkan Ujian</button>
+                            <button onclick="submitQuiz()" class="px-6 py-2 bg-gold-600 text-navy-950 font-bold text-xs rounded-xl hover:bg-gold-500 shadow-md transition">
+                                Kirim Jawaban Evaluasi
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Quiz Result Summary Modal (Hidden) -->
+                    <div id="quiz-result-view" class="hidden text-center py-8 space-y-5">
+                        <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-4xl mx-auto shadow-md border-2 border-emerald-400">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs uppercase tracking-widest text-slate-500 font-bold">Hasil Evaluasi Anda</span>
+                            <h2 class="font-serif text-3xl font-bold text-navy-900 mt-1">Nilai: 100 / 100</h2>
+                            <p class="text-xs text-emerald-600 font-bold mt-1">LULUS DENGAN PREDIKAT PERFECT</p>
+                        </div>
+                        <div class="max-w-md mx-auto bg-parchment p-4 rounded-xl border border-gold-600/30 text-left text-xs space-y-2">
+                            <p><strong>Ulasan Singkat Pendidik:</strong> "Pemahaman konsep Sokratik dan Akademia Plato sangat presisi. Esai analisis Anda menunjukkan kedalaman pemikiran kritis."</p>
+                        </div>
+                        <button onclick="closeQuizResult()" class="px-6 py-2.5 bg-navy-900 text-gold-400 font-bold text-xs rounded-xl hover:bg-navy-800 transition">
+                            Kembali ke Daftar Evaluasi
+                        </button>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- 4. TAB TUGAS KELOMPOK (GROUP ASSIGNMENTS) -->
+            <section id="tab-assignments" class="tab-content hidden space-y-6">
+                
+                <div class="bg-ivory border border-gold-600/20 rounded-2xl p-6 shadow-sm flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                    <div>
+                        <h1 class="font-serif text-2xl font-bold text-navy-900">Tugas Kelompok & Ruang Kolaborasi</h1>
+                        <p class="text-xs text-slate-500 mt-1">Ruang diskusi privat, pembagian tugas anggota, dan unggah laporan kelompok.</p>
+                    </div>
+                    <span class="px-3 py-1.5 bg-navy-900 text-gold-400 text-xs font-semibold rounded-lg self-start sm:self-auto">
+                        <i class="fa-solid fa-users mr-1.5"></i> Kelompok 2 - Archimedes
+                    </span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Left: Detail Tugas & Anggota (2 Cols) -->
+                    <div class="lg:col-span-2 space-y-6">
+                        
+                        <!-- Detail Card Project -->
+                        <div class="bg-ivory border border-gold-600/30 rounded-2xl p-6 shadow-sm space-y-4">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <span class="text-xs font-bold text-gold-700 uppercase tracking-wider">Pemrograman & Algorithm</span>
+                                    <h2 class="font-serif text-xl font-bold text-navy-900 mt-0.5">Perancangan Arsitektur Database Akademik</h2>
+                                </div>
+                                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full border border-amber-300">
+                                    Deadline: 21 Okt 2026 (23:59 WIB)
+                                </span>
+                            </div>
+
+                            <p class="text-xs text-slate-600 leading-relaxed">
+                                Buatlah diagram Normalisasi Database (1NF hingga 3NF) serta query SQL DDL untuk sistem portal perpustakaan klasik terpadu. Unggah hasil akhir dalam format PDF.
+                            </p>
+
+                            <!-- Anggota Kelompok Grid -->
+                            <div class="pt-4 border-t border-slate-200">
+                                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Anggota Kelompok & Pembagian Tugas:</h3>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <div class="bg-parchment p-3 rounded-xl border border-gold-600/20 flex items-center space-x-2">
+                                        <div class="w-8 h-8 rounded-full bg-gold-600 text-navy-950 font-bold text-xs flex items-center justify-center shrink-0">AP</div>
+                                        <div class="overflow-hidden">
+                                            <p class="text-xs font-bold text-navy-900 truncate">Arya Penangsang (Ketua)</p>
+                                            <p class="text-[10px] text-slate-500 truncate">Perancangan SQL DDL</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-parchment p-3 rounded-xl border border-slate-200 flex items-center space-x-2">
+                                        <div class="w-8 h-8 rounded-full bg-navy-900 text-gold-400 font-bold text-xs flex items-center justify-center shrink-0">S2</div>
+                                        <div class="overflow-hidden">
+                                            <p class="text-xs font-bold text-navy-900 truncate">Siti Rahmani</p>
+                                            <p class="text-[10px] text-slate-500 truncate">Diagram ERD & 2NF</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-parchment p-3 rounded-xl border border-slate-200 flex items-center space-x-2">
+                                        <div class="w-8 h-8 rounded-full bg-navy-900 text-gold-400 font-bold text-xs flex items-center justify-center shrink-0">S3</div>
+                                        <div class="overflow-hidden">
+                                            <p class="text-xs font-bold text-navy-900 truncate">Sultan Ageng</p>
+                                            <p class="text-[10px] text-slate-500 truncate">Penyusunan Laporan PDF</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Upload Form Submission -->
+                            <div class="pt-4 border-t border-slate-200 space-y-3">
+                                <h3 class="text-xs font-bold text-navy-900">Pengumpulan Berkas Laporan Kelompok</h3>
+                                <div class="border-2 border-dashed border-gold-600/40 rounded-xl p-4 text-center bg-parchment/40 hover:bg-parchment transition cursor-pointer" onclick="document.getElementById('file-upload').click()">
+                                    <i class="fa-solid fa-cloud-arrow-up text-gold-600 text-2xl mb-1"></i>
+                                    <p class="text-xs font-semibold text-navy-900">Klik untuk memilih file PDF atau drag & drop</p>
+                                    <p class="text-[10px] text-slate-400">Ukuran maksimal file: 15MB</p>
+                                    <input type="file" id="file-upload" class="hidden" onchange="handleFileUpload(this)">
+                                </div>
+                                <div id="uploaded-file-info" class="hidden p-2 bg-emerald-50 border border-emerald-300 rounded-lg text-xs text-emerald-800 flex justify-between items-center">
+                                    <span id="file-name-text"><i class="fa-solid fa-file-pdf mr-1"></i> Tugas_Kelompok_Archimedes.pdf</span>
+                                    <span class="text-[10px] font-bold text-emerald-600">Siap Dikirim</span>
+                                </div>
+                                <button onclick="submitGroupAssignment()" class="w-full py-2.5 bg-navy-900 text-gold-400 font-bold text-xs rounded-xl hover:bg-navy-800 transition">
+                                    Submit Tugas Kelompok
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right: Live Chat Diskusi Kelompok -->
+                    <div class="bg-ivory border border-gold-600/30 rounded-2xl p-4 shadow-sm flex flex-col h-[500px]">
+                        <div class="pb-3 border-b border-slate-200 flex items-center justify-between">
+                            <span class="font-serif font-bold text-sm text-navy-900"><i class="fa-regular fa-comments text-gold-600 mr-1.5"></i> Diskusi Tim Archimedes</span>
+                            <span class="w-2.5 h-2.5 bg-emerald-500 rounded-full" title="3 Anggota Online"></span>
+                        </div>
+
+                        <!-- Message Body Log -->
+                        <div class="flex-1 overflow-y-auto py-3 space-y-3 pr-1 text-xs" id="chat-box">
+                            <!-- Msg 1 -->
+                            <div class="flex items-start space-x-2">
+                                <div class="w-6 h-6 rounded-full bg-navy-900 text-gold-400 font-bold text-[10px] flex items-center justify-center shrink-0">SR</div>
+                                <div class="bg-parchment p-2.5 rounded-2xl rounded-tl-none border border-slate-200 max-w-[80%]">
+                                    <p class="font-bold text-[10px] text-navy-900">Siti Rahmani</p>
+                                    <p class="text-slate-700 mt-0.5">Saya sudah menyelesaikan draf diagram ERD untuk tabel Mahasiswa dan Matakuliah.</p>
+                                    <span class="text-[9px] text-slate-400 mt-1 block">09:15 WIB</span>
+                                </div>
+                            </div>
+
+                            <!-- Msg 2 (Self) -->
+                            <div class="flex items-start space-x-2 justify-end">
+                                <div class="bg-navy-900 text-ivory p-2.5 rounded-2xl rounded-tr-none max-w-[80%]">
+                                    <p class="font-bold text-[10px] text-gold-400">Arya (Anda)</p>
+                                    <p class="mt-0.5">Bagus sekali Siti! Nanti saya susun DDL query primary key & foreign key-nya.</p>
+                                    <span class="text-[9px] text-slate-400 mt-1 block text-right">09:20 WIB</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Input Chat -->
+                        <div class="pt-3 border-t border-slate-200 flex items-center space-x-2">
+                            <input type="text" id="chat-input" placeholder="Tulis pesan ke kelompok..." class="flex-1 text-xs bg-parchment p-2.5 rounded-xl border border-slate-300 focus:outline-none focus:border-gold-600">
+                            <button onclick="sendChatMessage()" class="p-2.5 bg-navy-900 text-gold-400 rounded-xl hover:bg-navy-800 transition">
+                                <i class="fa-solid fa-paper-plane text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+
+            <!-- 5. TAB ABSENSI SISWA (ATTENDANCE TRACKING) -->
+            <section id="tab-attendance" class="tab-content hidden space-y-6">
+                
+                <div class="bg-ivory border border-gold-600/20 rounded-2xl p-6 shadow-sm">
+                    <h1 class="font-serif text-2xl font-bold text-navy-900">Absensi & Presensi Siswa</h1>
+                    <p class="text-xs text-slate-500 mt-1">Pencatatan kehadiran harian, pengisian presensi mandiri, serta laporan rekapitulasi bulanan.</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Form Presensi Mandiri (1 Col) -->
+                    <div class="bg-navy-900 text-ivory border-2 border-gold-600/40 rounded-2xl p-6 shadow-classic space-y-5">
+                        <div class="border-b border-slate-800 pb-3">
+                            <span class="text-[10px] uppercase font-mono tracking-widest text-gold-400">Presensi Real-Time</span>
+                            <h2 class="font-serif text-lg font-bold text-ivory mt-0.5">Form Absen Mandiri</h2>
+                        </div>
+
+                        <!-- Webcam Mockup Placeholder -->
+                        <div class="relative bg-navy-950 rounded-xl h-44 border border-gold-600/30 flex flex-col items-center justify-center text-slate-400 overflow-hidden">
+                            <i class="fa-solid fa-camera text-3xl text-gold-500/60 mb-2"></i>
+                            <span class="text-xs font-mono">Swafoto Verifikasi Wajah</span>
+                            <span class="text-[10px] text-slate-500 mt-1">[ Kamera Aktif & Terverifikasi ]</span>
+                            <div class="absolute bottom-2 left-2 bg-navy-900/80 px-2 py-0.5 rounded text-[10px] text-gold-400 font-mono">
+                                Loc: -6.1754, 106.8272
+                            </div>
+                        </div>
+
+                        <!-- Status Option Selection -->
+                        <div class="space-y-2">
+                            <label class="text-xs text-slate-300 font-medium">Status Kehadiran Hari Ini:</label>
+                            <select id="attendance-status-select" class="w-full bg-navy-950 text-xs text-ivory border border-gold-600/40 rounded-xl p-2.5 focus:outline-none focus:border-gold-500">
+                                <option value="Hadir">Hadir di Kelas / Online</option>
+                                <option value="Izin">Izin (Keperluan Keluarga / Dinas)</option>
+                                <option value="Sakit">Sakit (Dengan Surat Dokter)</option>
+                            </select>
+                        </div>
+
+                        <button onclick="processSelfAttendance()" class="w-full py-3 bg-gradient-to-r from-gold-500 to-gold-600 text-navy-950 font-bold text-xs uppercase tracking-wider rounded-xl hover:brightness-110 transition shadow-lg">
+                            <i class="fa-solid fa-check-to-slot mr-1.5"></i> Absen Sekarang
+                        </button>
+                    </div>
+
+                    <!-- Rekap & Log Presensi Kalender (2 Cols) -->
+                    <div class="lg:col-span-2 space-y-6">
+                        
+                        <!-- Progress Donut Visual Rekap -->
+                        <div class="bg-ivory border border-gold-600/20 rounded-2xl p-6 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
+                            <div class="space-y-2 text-center sm:text-left">
+                                <h3 class="font-serif text-lg font-bold text-navy-900">Rekapitulasi Kehadiran Oktober 2026</h3>
+                                <p class="text-xs text-slate-600">Total Hari Efektif Belajar: 23 Hari</p>
+                                <div class="flex items-center justify-center sm:justify-start space-x-4 pt-2 text-xs">
+                                    <span class="flex items-center"><span class="w-3 h-3 bg-emerald-500 rounded-full mr-1.5"></span> Hadir: 22</span>
+                                    <span class="flex items-center"><span class="w-3 h-3 bg-amber-500 rounded-full mr-1.5"></span> Izin: 1</span>
+                                    <span class="flex items-center"><span class="w-3 h-3 bg-rose-500 rounded-full mr-1.5"></span> Alpa: 0</span>
+                                </div>
+                            </div>
+                            <div class="relative w-28 h-28 flex items-center justify-center shrink-0">
+                                <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                    <path class="text-slate-200" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path class="text-gold-600" stroke-dasharray="96, 100" stroke-width="3.5" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                </svg>
+                                <span class="absolute font-serif text-xl font-bold text-navy-900">96%</span>
+                            </div>
+                        </div>
+
+                        <!-- Tabel Riwayat Presensi -->
+                        <div class="bg-ivory border border-gold-600/20 rounded-2xl p-6 shadow-sm overflow-x-auto">
+                            <h3 class="font-serif font-bold text-navy-900 text-base mb-4">Riwayat Presensi Terbaru</h3>
+                            <table class="w-full text-left text-xs">
+                                <thead>
+                                    <tr class="border-b border-slate-200 text-slate-500 font-mono uppercase">
+                                        <th class="pb-3">Tanggal</th>
+                                        <th class="pb-3">Waktu Presensi</th>
+                                        <th class="pb-3">Metode</th>
+                                        <th class="pb-3 text-right">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100" id="attendance-log-body">
+                                    <tr>
+                                        <td class="py-3 font-semibold text-navy-900">19 Okt 2026</td>
+                                        <td class="py-3 font-mono text-slate-600">07:45:12 WIB</td>
+                                        <td class="py-3 text-slate-600">Swafoto & Geolocation</td>
+                                        <td class="py-3 text-right"><span class="px-2 py-1 bg-emerald-100 text-emerald-800 font-bold rounded-md">Hadir</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 font-semibold text-navy-900">18 Okt 2026</td>
+                                        <td class="py-3 font-mono text-slate-600">07:50:04 WIB</td>
+                                        <td class="py-3 text-slate-600">Kode OTP Sistem</td>
+                                        <td class="py-3 text-right"><span class="px-2 py-1 bg-emerald-100 text-emerald-800 font-bold rounded-md">Hadir</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="py-3 font-semibold text-navy-900">17 Okt 2026</td>
+                                        <td class="py-3 font-mono text-slate-600">08:10:00 WIB</td>
+                                        <td class="py-3 text-slate-600">Surat Keterangan</td>
+                                        <td class="py-3 text-right"><span class="px-2 py-1 bg-amber-100 text-amber-800 font-bold rounded-md">Izin</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Classic Footer -->
+    <footer class="bg-navy-950 text-slate-400 border-t-2 border-gold-600/40 py-8 mt-auto text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full bg-gold-600 flex items-center justify-center text-navy-950 font-serif font-bold">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <span class="font-serif text-ivory font-bold text-sm block">Academia Classica</span>
+                    <span class="text-[10px] text-slate-500">Sistem Informasi Belajar Online Terpadu Modern Klasik</span>
+                </div>
+            </div>
+            <div class="text-center sm:text-right text-[11px] text-slate-500 space-y-1">
+                <p>&copy; 2026 Academia Classica. Hak Cipta Dilindungi Undang-Undang.</p>
+                <p class="font-mono text-gold-500/70">Versi Portal 3.4.0 • Disain Cendekiawan Modern</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Tab Navigation Switcher Logic
+        function switchTab(tabId) {
+            // Hide all tabs
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(el => el.classList.add('hidden'));
+
+            // Show targeted tab
+            const target = document.getElementById('tab-' + tabId);
+            if (target) {
+                target.classList.remove('hidden');
+            }
+
+            // Update Active Styling on Navigation Links
+            const navButtons = document.querySelectorAll('.nav-link');
+            navButtons.forEach(btn => {
+                btn.classList.remove('bg-gold-600', 'text-navy-950', 'font-semibold', 'shadow-md');
+                btn.classList.add('text-slate-300');
+            });
+
+            const activeBtn = document.getElementById('nav-btn-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-gold-600', 'text-navy-950', 'font-semibold', 'shadow-md');
+                activeBtn.classList.remove('text-slate-300');
+            }
+
+            // Close mobile menu on switch
+            const sidebarNav = document.getElementById('sidebar-nav');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            sidebarNav.classList.add('-translate-x-full');
+            backdrop.classList.add('hidden');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mobile Sidebar Toggle
+        function toggleMobileSidebar() {
+            const sidebarNav = document.getElementById('sidebar-nav');
+            const backdrop = document.getElementById('sidebar-backdrop');
+            sidebarNav.classList.toggle('-translate-x-full');
+            backdrop.classList.toggle('hidden');
+        }
+
+        // Accordion Toggle Logic
+        function toggleAccordion(id) {
+            const content = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            
+            if (content.classList.contains('open')) {
+                content.classList.remove('open');
+                if (icon) icon.style.transform = 'rotate(0deg)';
+            } else {
+                content.classList.add('open');
+                if (icon) icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
+        // Course Hierarchy View Logic
+        function viewCourseDetail(courseKey) {
+            const hierarchySection = document.getElementById('course-hierarchy-section');
+            const coursesGrid = document.getElementById('courses-grid');
+            
+            coursesGrid.classList.add('hidden');
+            hierarchySection.classList.remove('hidden');
+
+            const titleEl = document.getElementById('hierarchy-title');
+            const catEl = document.getElementById('hierarchy-category');
+
+            if (courseKey === 'sejarah') {
+                titleEl.textContent = 'Sejarah Dunia & Peradaban';
+                catEl.textContent = 'Humaniora';
+            } else if (courseKey === 'matematika') {
+                titleEl.textContent = 'Matematika & Analisis Vektor';
+                catEl.textContent = 'Sains & Matematika';
+            } else if (courseKey === 'pemrograman') {
+                titleEl.textContent = 'Pemrograman & Algorithm';
+                catEl.textContent = 'Informatika';
+            }
+
+            window.scrollTo({ top: hierarchySection.offsetTop - 100, behavior: 'smooth' });
+        }
+
+        function closeCourseHierarchy() {
+            document.getElementById('course-hierarchy-section').classList.add('hidden');
+            document.getElementById('courses-grid').classList.remove('hidden');
+        }
+
+        // Lesson Detail Modal
+        function openLessonDetail(lessonId) {
+            document.getElementById('lesson-material-modal').classList.remove('hidden');
+        }
+
+        function closeLessonModal() {
+            document.getElementById('lesson-material-modal').classList.add('hidden');
+        }
+
+        function markLessonComplete() {
+            alert('Selamat! Sub-bab ini telah ditandai selesai. Progres akademik Anda diperbarui.');
+            closeLessonModal();
+        }
+
+        // Quiz Interactive Handler
+        let quizInterval;
+        function startQuiz() {
+            document.getElementById('quiz-list-container').classList.add('hidden');
+            document.getElementById('quiz-active-area').classList.remove('hidden');
+            document.getElementById('quiz-questions-step').classList.remove('hidden');
+            document.getElementById('quiz-result-view').classList.add('hidden');
+
+            // Countdown Timer Mockup
+            let time = 899; // 14 mins 59 secs
+            const timerEl = document.getElementById('quiz-timer');
+            clearInterval(quizInterval);
+            quizInterval = setInterval(() => {
+                let minutes = Math.floor(time / 60);
+                let seconds = time % 60;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+                timerEl.textContent = `${minutes}:${seconds}`;
+                if (time <= 0) {
+                    clearInterval(quizInterval);
+                    submitQuiz();
+                }
+                time--;
+            }, 1000);
+        }
+
+        function cancelQuiz() {
+            clearInterval(quizInterval);
+            document.getElementById('quiz-active-area').classList.add('hidden');
+            document.getElementById('quiz-list-container').classList.remove('hidden');
+        }
+
+        function submitQuiz() {
+            clearInterval(quizInterval);
+            document.getElementById('quiz-questions-step').classList.add('hidden');
+            document.getElementById('quiz-result-view').classList.remove('hidden');
+        }
+
+        function closeQuizResult() {
+            cancelQuiz();
+        }
+
+        // Group Assignment File Handler & Chat
+        function handleFileUpload(input) {
+            if (input.files && input.files[0]) {
+                const fileName = input.files[0].name;
+                const fileInfo = document.getElementById('uploaded-file-info');
+                const fileNameText = document.getElementById('file-name-text');
+                
+                fileNameText.innerHTML = `<i class="fa-solid fa-file-pdf mr-1"></i> ${fileName}`;
+                fileInfo.classList.remove('hidden');
+            }
+        }
+
+        function submitGroupAssignment() {
+            const fileInfo = document.getElementById('uploaded-file-info');
+            if (fileInfo.classList.contains('hidden')) {
+                alert('Peringatan: Harap pilih berkas laporan PDF terlebih dahulu sebelum mengirim.');
+                return;
+            }
+            alert('Tugas kelompok berhasil dikirim ke dosen pengampu! Timestamp penyerahan telah direkam.');
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const chatBox = document.getElementById('chat-box');
+            
+            if (input.value.trim() !== '') {
+                const now = new Date();
+                const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ' WIB';
+                
+                const newMsg = `
+                    <div class="flex items-start space-x-2 justify-end">
+                        <div class="bg-navy-900 text-ivory p-2.5 rounded-2xl rounded-tr-none max-w-[80%]">
+                            <p class="font-bold text-[10px] text-gold-400">Arya (Anda)</p>
+                            <p class="mt-0.5">${input.value}</p>
+                            <span class="text-[9px] text-slate-400 mt-1 block text-right">${timeStr}</span>
+                        </div>
+                    </div>
+                `;
+                chatBox.insertAdjacentHTML('beforeend', newMsg);
+                input.value = '';
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+
+        // Attendance Form Handler
+        function processSelfAttendance() {
+            const status = document.getElementById('attendance-status-select').value;
+            const logBody = document.getElementById('attendance-log-body');
+            const statusNav = document.getElementById('nav-attendance-status');
+
+            const now = new Date();
+            const dateStr = '19 Okt 2026';
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0') + ':' + now.getSeconds().toString().padStart(2, '0') + ' WIB';
+
+            let badgeClass = 'bg-emerald-100 text-emerald-800';
+            if (status === 'Izin') badgeClass = 'bg-amber-100 text-amber-800';
+            if (status === 'Sakit') badgeClass = 'bg-rose-100 text-rose-800';
+
+            const newRow = `
+                <tr>
+                    <td class="py-3 font-semibold text-navy-900">${dateStr}</td>
+                    <td class="py-3 font-mono text-slate-600">${timeStr}</td>
+                    <td class="py-3 text-slate-600">Swafoto & Geolocation</td>
+                    <td class="py-3 text-right"><span class="px-2 py-1 ${badgeClass} font-bold rounded-md">${status}</span></td>
+                </tr>
+            `;
+
+            logBody.insertAdjacentHTML('afterbegin', newRow);
+            statusNav.textContent = `${status} (${timeStr.substring(0, 5)} WIB)`;
+            alert(`Presensi Berhasil Terdaftar! Status Anda hari ini diset sebagai: ${status}.`);
+        }
+    </script>
+</body>
+</html>
